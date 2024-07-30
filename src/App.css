@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+.custom-convert-btn, 
+.custom-convert-btn:hover, 
+.custom-convert-btn:disabled, 
+.custom-convert-btn:focus, 
+.custom-convert-btn:active, 
+.custom-convert-btn:visited, 
+.custom-convert-btn:link {
+  color: white;
+  border: none;
+}

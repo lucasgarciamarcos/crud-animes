@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import AnimeCard from '../../components/AnimeCard';
 import AnimeModal from '../../components/AnimeModal';
+import CurrencyConverterModal from '../../components/CurrencyConverterModal';
 
 interface Anime {
     id: number;
@@ -12,8 +13,10 @@ interface Anime {
 
 const Animes: React.FC = () => {
     const [animes, setAnimes] = useState<Anime[]>([]);
-    const [showModal, setShowModal] = useState(false);
+    const [showAnimeModal, setShowAnimeModal] = useState(false);
+    const [showConverterModal, setShowConverterModal] = useState(false);
     const [editingAnime, setEditingAnime] = useState<Anime | null>(null);
+    const [selectedAnimePrice, setSelectedAnimePrice] = useState<number>(0);
 
     useEffect(() => {
         const storedAnimes = localStorage.getItem('animes');
@@ -36,13 +39,13 @@ const Animes: React.FC = () => {
         }
     }, [animes]);
 
-    const handleShowModal = (anime: Anime | null) => {
+    const handleShowAnimeModal = (anime: Anime | null) => {
         setEditingAnime(anime);
-        setShowModal(true);
+        setShowAnimeModal(true);
     };
 
-    const handleCloseModal = () => {
-        setShowModal(false);
+    const handleCloseAnimeModal = () => {
+        setShowAnimeModal(false);
     };
 
     const handleFormSubmit = (form: { title: string, description: string, price: number }) => {
@@ -60,12 +63,21 @@ const Animes: React.FC = () => {
             };
             setAnimes([...animes, newAnime]);
         }
-        handleCloseModal();
+        handleCloseAnimeModal();
     };
 
     const handleDeleteAnime = (id: number) => {
         const updatedAnimes = animes.filter(anime => anime.id !== id);
         setAnimes(updatedAnimes);
+    };
+
+    const handleShowConverterModal = (price: number) => {
+        setSelectedAnimePrice(price);
+        setShowConverterModal(true);
+    };
+
+    const handleCloseConverterModal = () => {
+        setShowConverterModal(false);
     };
 
     return (
@@ -78,22 +90,33 @@ const Animes: React.FC = () => {
             <Row className="mt-4">
                 {animes.map(anime => (
                     <Col key={anime.id} sm={12} md={6} lg={4} className="mb-4">
-                        <AnimeCard anime={anime} onEdit={() => handleShowModal(anime)} onDelete={handleDeleteAnime} />
+                        <AnimeCard 
+                            anime={anime} 
+                            onEdit={() => handleShowAnimeModal(anime)} 
+                            onDelete={handleDeleteAnime}
+                            onConvert={() => handleShowConverterModal(anime.price)}
+                        />
                     </Col>
                 ))}
             </Row>
             <Row className="mt-4">
                 <Col className="text-center">
-                    <Button variant="success" onClick={() => handleShowModal(null)}>Add New Anime</Button>
+                    <Button variant="success" onClick={() => handleShowAnimeModal(null)}>Add New Anime</Button>
                 </Col>
             </Row>
 
             <AnimeModal
-                show={showModal}
-                onHide={handleCloseModal}
+                show={showAnimeModal}
+                onHide={handleCloseAnimeModal}
                 onSubmit={handleFormSubmit}
                 initialForm={editingAnime ? { title: editingAnime.title, description: editingAnime.description, price: editingAnime.price } : { title: '', description: '', price: 0 }}
                 editingAnime={editingAnime}
+            />
+
+            <CurrencyConverterModal
+                show={showConverterModal}
+                onHide={handleCloseConverterModal}
+                price={selectedAnimePrice}
             />
         </Container>
     );
