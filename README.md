@@ -1,3 +1,11 @@
+# Esse é meu primeiro app em react do zero XD
+É simples mas eu gostei de implementar e pra rodar é muito simples, então no terminal:
+- npm install
+- yarn start
+
+
+E abaixo eu vou deixar o README padrão do create-react-app com instruções pro build.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
