@@ -1,6 +1,4 @@
-import React from 'react';
-import { BrowserRouter, Routes } from 'react-router-dom';
-import logo from './logo.svg';
+import { BrowserRouter } from 'react-router-dom';
 import './App.css';
 import RoutesConfig from './routes';
 

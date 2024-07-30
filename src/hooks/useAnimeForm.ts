@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface AnimeForm {
     title: string;
@@ -7,10 +7,14 @@ interface AnimeForm {
 }
 
 const useAnimeForm = (initialForm: AnimeForm, onSubmit: (form: AnimeForm) => void) => {
-    const [form, setForm] = useState<AnimeForm>(initialForm);
+    const [form, setForm] = useState(initialForm);
     const [error, setError] = useState<string | null>(null);
 
-    const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    useEffect(() => {
+        setForm(initialForm);
+    }, [initialForm]);
+
+    const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
         setForm(prevForm => ({
             ...prevForm,
@@ -18,35 +22,16 @@ const useAnimeForm = (initialForm: AnimeForm, onSubmit: (form: AnimeForm) => voi
         }));
     };
 
-    const validateForm = () => {
-        if (form.price <= 0) {
-            setError('Price must be greater than zero.');
-            return false;
-        }
-        if (!form.title.trim()) {
-            setError('Title cannot be empty.');
-            return false;
-        }
-        if (!form.description.trim()) {
-            setError('Description cannot be empty.');
-            return false;
+    const handleSubmit = () => {
+        if (!form.title || !form.description || isNaN(form.price)) {
+            setError('Please fill out all fields correctly.');
+            return;
         }
         setError(null);
-        return true;
+        onSubmit(form);
     };
 
-    const handleSubmit = () => {
-        if (validateForm()) {
-            onSubmit(form);
-        }
-    };
-
-    return {
-        form,
-        error,
-        handleFormChange,
-        handleSubmit,
-    };
+    return { form, error, handleFormChange, handleSubmit };
 };
 
 export default useAnimeForm;

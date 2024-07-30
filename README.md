@@ -1,6 +1,7 @@
 # Esse é meu primeiro app em react do zero XD
 É simples mas eu gostei de implementar e pra rodar é muito simples, então no terminal:
-- npm install
+- npm install --global yarn
+- yarn install
 - yarn start
 
 

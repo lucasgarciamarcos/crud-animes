@@ -90,9 +90,9 @@ const Animes: React.FC = () => {
             <Row className="mt-4">
                 {animes.map(anime => (
                     <Col key={anime.id} sm={12} md={6} lg={4} className="mb-4">
-                        <AnimeCard 
-                            anime={anime} 
-                            onEdit={() => handleShowAnimeModal(anime)} 
+                        <AnimeCard
+                            anime={anime}
+                            onEdit={() => handleShowAnimeModal(anime)}
                             onDelete={handleDeleteAnime}
                             onConvert={() => handleShowConverterModal(anime.price)}
                         />
